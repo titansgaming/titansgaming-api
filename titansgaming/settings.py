@@ -148,3 +148,6 @@ STATICFILES_DIRS = [
 
 MEDIA_ROOT = str(APPS_DIR('media'))
 MEDIA_URL = '/media/'
+
+
+MUMBLEBOXES_API = 'https://www.mumbleboxes.com/servers/633/cvp.json'

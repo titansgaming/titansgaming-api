@@ -1,11 +1,11 @@
 from django.conf.urls import url
-from django.views.generic import TemplateView
 
+from titansgaming.mumble.views import MumbleView
 
 urlpatterns = [
     url(
         r'^$',
-        TemplateView.as_view(template_name='mumble/mumble.html'),
-        name='mumble'
+        MumbleView.as_view(),
+        name='mumble_index'
     ),
 ]
