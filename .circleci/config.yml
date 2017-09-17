@@ -3,7 +3,9 @@ jobs:
   flake8:
     docker:
       - image: python:3.6.2
+    working_directory: ~/repo
     steps:
+      - checkout
       - run:
           name: Install dependencies
           command: pip3 install flake8
