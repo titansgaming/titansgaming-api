@@ -1,7 +1,8 @@
 {% for channel in channels %}
   <li>
-    <a href="{{channel.url}}">{{channel.name}}</a>
-    <p>{{channel.description}}</p>
+    <a href="{{channel.url}}" title="{{channel.description}}">
+      {{channel.name}}
+    </a>
 
     {% if channel.users %}
     <p>
