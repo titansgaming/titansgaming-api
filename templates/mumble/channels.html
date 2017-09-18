@@ -1,0 +1,25 @@
+{% for channel in channels %}
+  <li>
+    <a href="{{channel.url}}">{{channel.name}}</a>
+    <p>{{channel.description}}</p>
+
+    {% if channel.users %}
+    <p>
+      <ul>
+        {% for user in channel.users %}
+          <li>{{user.name}}</li>
+        {% endfor %}
+      </ul>
+    </p>
+    {% endif %}
+
+    {% if channel.channels %}
+    <p>
+      <ul>
+        {% include 'mumble/channels.html' with channels=channel.channels %}
+      </ul>
+    </p>
+    {% endif %}
+
+  </li>
+{% endfor %}

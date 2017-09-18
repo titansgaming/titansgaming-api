@@ -10,22 +10,35 @@ def _process_channel(feed):
         'name': feed['name'],
         'description': feed['description'],
         'url': feed['x_connecturl'],
-        'users': feed['users'],
+        'users': [],
         'channels': [],
     }
     if feed['channels']:
         for child in feed['channels']:
             channel['channels'].append(_process_channel(child))
+    if feed['users']:
+        for user in feed['users']:
+            channel['users'].append(_process_user(user))
     return channel
+
+
+def _process_user(user):
+    return {
+        'name': user['name'],
+        'comment': user['comment'],
+        'deaf': user['deaf'],
+        'mute': user['mute'],
+        'online_seconds': user['onlinesecs'],
+        'idle_seconds': user['idlesecs'],
+    }
+    return user
 
 
 class MumbleView(TemplateView):
     template_name = "mumble/index.html"
 
     def _get_channels(self, feed):
-        channels = _process_channel(feed['root'])
-        import pprint
-        pprint.pprint(channels)
+        channels = [_process_channel(feed['root'])]
         return channels
 
     def get_context_data(self, **kwargs):
