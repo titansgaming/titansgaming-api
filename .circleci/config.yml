@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build-flake8:
+  build-python-lint:
     docker:
       - image: python:3.6.2
     working_directory: ~/repo
@@ -8,10 +8,22 @@ jobs:
       - checkout
       - run:
           name: Install dependencies
-          command: pip3 install flake8
+          command: pip3 install -r requirements.test.txt
       - run:
           name: Lint with Flake8
           command: flake8
+  build-python-test:
+    docker:
+      - image: python:3.6.2
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: pip3 install -r requirements.test.txt
+      - run:
+          name: Test with pytest
+          command: pytest
 
 workflows:
   version: 2
