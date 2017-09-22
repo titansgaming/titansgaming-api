@@ -7,3 +7,5 @@ build/
 *.log
 *.pyc
 *.sqlite*
+
+.python-version
