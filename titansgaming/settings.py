@@ -27,8 +27,7 @@ APPS_DIR = ROOT_DIR.path('titansgaming')
 SECRET_KEY = 'CHANGE_ME_SOMETIME'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-# DEBUG = env.bool('DJANGO_DEBUG', False)
+DEBUG = env.bool('DJANGO_DEBUG', False)
 
 ALLOWED_HOSTS = ['*']
 

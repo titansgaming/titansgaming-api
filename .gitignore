@@ -3,10 +3,10 @@ _build/
 .cache/
 build/
 
-
 *.css
 *.log
 *.pyc
 *.sqlite*
 
+.envrc
 .python-version
