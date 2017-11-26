@@ -29,6 +29,12 @@ urlpatterns = [
         TemplateView.as_view(template_name='pages/home.html'),
         name='home'
     ),
+    url(
+        r'^robots\.txt$',
+        TemplateView.as_view(
+            template_name='pages/robots.txt', content_type='text/plain'
+        )
+    ),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
