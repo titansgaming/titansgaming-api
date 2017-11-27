@@ -1,52 +1,47 @@
-import json
-from requests import get
+from django.http import Http404
+from rest_framework.response import Response
+from rest_framework.reverse import reverse
+from rest_framework.views import APIView
 
-from django.conf import settings
-from django.views.generic import TemplateView
-
-
-def _process_channel(feed):
-    channel = {
-        'name': feed['name'],
-        'description': feed['description'],
-        'url': feed['x_connecturl'],
-        'users': [],
-        'channels': [],
-    }
-    if feed['channels']:
-        for child in feed['channels']:
-            channel['channels'].append(_process_channel(child))
-    if feed['users']:
-        for user in feed['users']:
-            channel['users'].append(_process_user(user))
-    return channel
+from .models import mumble_servers
+from .serializers import (
+    MumbleServerSerializer,
+    MumbleServerDetailSerializer,
+)
 
 
-def _process_user(user):
-    return {
-        'name': user['name'],
-        'comment': user['comment'],
-        'deaf': user['deaf'],
-        'mute': user['mute'],
-        'online_seconds': user['onlinesecs'],
-        'idle_seconds': user['idlesecs'],
-    }
-    return user
+class MumbleView(APIView):
+    def get(self, request):
+        return Response({
+            'servers': reverse(
+                'mumble-servers-list', request=request, format=None
+            ),
+        })
 
 
-class MumbleView(TemplateView):
-    template_name = "mumble/index.html"
+class MumbleServersListView(APIView):
+    serializer_class = MumbleServerSerializer
 
-    def _get_channels(self, feed):
-        channels = [_process_channel(feed['root'])]
-        return channels
+    def get(self, request):
+        serializer = MumbleServerSerializer(
+            instance=mumble_servers.values(),
+            many=True,
+            context={'request': request},
+        )
+        return Response(serializer.data)
 
-    def get_context_data(self, **kwargs):
-        response = get(settings.MUMBLEBOXES_API)
-        feed = json.loads(response.text)
 
-        context = super().get_context_data(**kwargs)
-        context['server_name'] = feed['name']
-        context['server_url'] = feed['x_connecturl']
-        context['channels'] = self._get_channels(feed)
-        return context
+class MumbleServersDetailView(APIView):
+    def get_object(self, pk):
+        if int(pk) == 1:
+            return mumble_servers[1]
+        else:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        mumble_server = self.get_object(pk)
+        serializer = MumbleServerDetailSerializer(
+            mumble_server,
+            context={'request': request},
+        )
+        return Response(serializer.data)
