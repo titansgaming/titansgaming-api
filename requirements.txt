@@ -2,7 +2,7 @@ certifi==2017.7.27.1
 chardet==3.0.4
 Django==1.11.28
 django-environ==0.4.4
-Djangorestframework==3.9.1
+Djangorestframework==3.11.2
 gunicorn==19.7.1
 idna==2.6
 pytz==2017.2
